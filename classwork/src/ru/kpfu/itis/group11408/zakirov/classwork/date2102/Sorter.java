@@ -10,7 +10,7 @@ public class Sorter {
         for (int val : a)
             System.out.print(val + " ");
 
-        Sorter.sort(a);
+        Sorter.bubbleSort(a);
 
         System.out.println();
         for (int val : a)
@@ -31,6 +31,18 @@ public class Sorter {
                 a[mnPos] = tmp;
             }
         }
+        return a;
+    }
+
+    public static int[] bubbleSort(int[] a){
+        for (int i = 0; i < a.length; i++)
+            for (int j = 0; j < a.length - 1; j++)
+                if (a[j] > a[j + 1]){
+                    int tmp = a[j];
+                    a[j] = a[j + 1];
+                    a[j + 1] = tmp;
+                }
+
         return a;
     }
 }
