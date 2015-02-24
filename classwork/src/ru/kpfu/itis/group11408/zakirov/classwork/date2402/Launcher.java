@@ -37,7 +37,7 @@ public class Launcher {
     public static Student[] insertionSort(Student[] students, Comparator<Student> comparator){
         for (int i = 0; i < students.length; i++)
             for (int j = 0; j < students.length - 1; j++)
-                if (comparator.compare(students[j], students[j + 1g]) >= 0){
+                if (comparator.compare(students[j], students[j + 1]) >= 0){
                     Student temp_student = students[j];
                     students[j] = students[j + 1];
                     students[j + 1] = temp_student;
