@@ -38,6 +38,31 @@ public class DynamicArray {
         dynamicArray.addElement(new String("Anvar"));
         System.out.println(dynamicArray.getSize());
         dynamicArray.removeElement(1);
+        dynamicArray.removeElement(2);
+        dynamicArray.removeElement(3);
+        dynamicArray.removeElement(4);
+        System.out.println(dynamicArray.getSize());
+        dynamicArray.removeElement(5);
+        dynamicArray.removeElement(6);
+        dynamicArray.removeElement(7);
+        System.out.println(dynamicArray.getSize());
+        dynamicArray.removeElement(1);
+        dynamicArray.removeElement(1);
+        dynamicArray.removeElement(1);
+        dynamicArray.removeElement(1);
+        System.out.println(dynamicArray.getSize());
+        dynamicArray.removeElement(1);
+        dynamicArray.removeElement(1);
+        System.out.println(dynamicArray.getSize());
+        dynamicArray.removeElement(1);
+        dynamicArray.removeElement(1);
+        dynamicArray.removeElement(1);
+        dynamicArray.removeElement(1);
+        dynamicArray.removeElement(1);
+        dynamicArray.removeElement(1);
+        dynamicArray.removeElement(1);
+        System.out.println(dynamicArray.getSize());
+        dynamicArray.removeElement(0);
     }
 
     public void addElement(Object obj){
@@ -57,6 +82,9 @@ public class DynamicArray {
     public void insertElement(Object obj, int index){
         if (index < 0 || index >= objects.length)
             throw new IndexOutOfBoundsException();
+
+        if (this.objects[index] == null)
+            this.size++;
         objects[index] = obj;
     }
 
@@ -65,15 +93,18 @@ public class DynamicArray {
             throw new IndexOutOfBoundsException();
         Object[] objects_temp;
         if (this.size - 1 % 5 == 0)
-            objects_temp = new Objects[objects.length - 5];
+            objects_temp = new Object[objects.length - 5];
         else
-            objects_temp = new Objects[objects.length];
+            objects_temp = new Object[objects.length];
 
-        for (int i = 0, k = 0; i < objects.length; i++, k++){
+        for (int i = 0, k = 0; k < objects_temp.length && i < objects_temp.length; i++, k++){
             if (i == index)
                 i++;
             objects_temp[k] = objects[i];
         }
+
+        objects = objects_temp;
+        this.size--;
     }
 
     public Object getElement(int index){
