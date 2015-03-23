@@ -1,4 +1,4 @@
-package ru.kpfu.itis.group11408.zakirov;
+package ru.kpfu.itis.group11408.zakirov.superStack;
 
 import java.util.*;
 

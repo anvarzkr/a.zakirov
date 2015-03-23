@@ -1,4 +1,4 @@
-package ru.kpfu.itis.group11408.zakirov;
+package ru.kpfu.itis.group11408.zakirov.superStack;
 
 import java.util.Scanner;
 
@@ -9,6 +9,8 @@ public class Launcher {
     public static void main(String[] args) {
         SuperStack<Integer> superStack = new SuperStack<>();
         Scanner scanner = new Scanner(System.in);
+        System.out.println();
+        System.out.println();
         System.out.println("Please, write brackets sequence.");
         System.out.println("Pojalyusta, vvedite posledovatelnost skobok.");
         String str = scanner.next();
