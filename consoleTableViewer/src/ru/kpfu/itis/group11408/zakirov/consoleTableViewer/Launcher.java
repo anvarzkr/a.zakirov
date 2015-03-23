@@ -39,10 +39,10 @@ public class Launcher {
         ViewProvider<Animal> viewProvider = new ViewProvider<Animal>() {
 
             String[] labels = new String[]{
-                    "Голод",
-                    "Год",
-                    "Имя",
-                    "Рык"
+                    "Gunger",
+                    "Year",
+                    "Name",
+                    "Roar"
             };
 
             @Override
@@ -107,9 +107,9 @@ public class Launcher {
         ViewProvider<Student> viewProvider = new ViewProvider<Student>() {
 
             String[] labels = new String[]{
-                    "Имя",
-                    "Год",
-                    "Оценка"
+                    "Name",
+                    "Year",
+                    "Rating"
             };
 
             @Override

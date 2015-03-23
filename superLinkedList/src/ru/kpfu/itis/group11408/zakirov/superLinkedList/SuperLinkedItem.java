@@ -4,27 +4,15 @@ package ru.kpfu.itis.group11408.zakirov.superLinkedList;
  * Created by Anvar on 14.03.2015.
  */
 public class SuperLinkedItem<T> {
-    private SuperLinkedItem<T> previous;
-    private SuperLinkedItem<T> next;
     private T data;
+    private SuperLinkedItem next = null;
 
-    public SuperLinkedItem(T data, SuperLinkedItem<T> previous){
-
+    public SuperLinkedItem(T obj) {
+        this.data = obj;
     }
 
-    public SuperLinkedItem<T> getPrevious() {
-        return previous;
-    }
-
-    public void setPrevious(SuperLinkedItem<T> previous) {
-        this.previous = previous;
-    }
-
-    public SuperLinkedItem<T> getNext() {
-        return next;
-    }
-
-    public void setNext(SuperLinkedItem<T> next) {
+    public SuperLinkedItem(T obj, SuperLinkedItem next) {
+        this.data = obj;
         this.next = next;
     }
 
@@ -32,7 +20,15 @@ public class SuperLinkedItem<T> {
         return data;
     }
 
-    public void setData(T item) {
-        this.data = item;
+    public void setData(T data){
+        this.data = data;
+    }
+
+    public void setNext(SuperLinkedItem next) {
+        this.next = next;
+    }
+
+    public SuperLinkedItem getNext() {
+        return next;
     }
 }
