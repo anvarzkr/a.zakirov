@@ -20,7 +20,7 @@ public class Launcher {
         while (iterator.hasNext()){
             System.out.println(iterator.next());
         }
-        
+
         System.out.println();
         stringList.remove(0);
         stringList.add(0, "I");
