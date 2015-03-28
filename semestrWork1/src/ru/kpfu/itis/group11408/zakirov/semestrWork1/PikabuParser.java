@@ -5,8 +5,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.IOException;
-
 /**
  * Created by Anvar on 27.03.2015.
  */
@@ -23,7 +21,8 @@ public class PikabuParser {
         try {
             this.document = Jsoup.connect(url).get();
         }catch(Exception e) {
-            System.err.println("Story unavailable: " + url + ".");
+            System.err.println("Story unavailable: " + url);
+            //e.printStackTrace();
         }
 
     }
@@ -35,17 +34,20 @@ public class PikabuParser {
     public PikabuStory getNextStory() {
         if (this.currentStoryId == 0)
             this.currentStoryId = getLastStoryId();
-
-        Element story = new PikabuParser("http://pikabu.ru/story/_" + currentStoryId).document.getElementById("inner_wrap_" + this.currentStoryId--);
-        if (story == null)
+        Element story = null;
+        try{
+            story = new PikabuParser("http://pikabu.ru/story/_" + currentStoryId).document.getElementById("inner_wrap_" + this.currentStoryId--);
+        }catch (NullPointerException npe){
+            System.out.println("Story not found: http://pikabu.ru/story/_" + currentStoryId + 1);
             return null;
+        }
 
         return (this.currentStory = new PikabuStory(story));
     }
 
     public int getLastStoryId(){
         int lastStoryId;
-        Elements stories = new PikabuParser("http://pikabu.ru/new").document.getElementById("stories_container").getElementsByClass("b-story");
+        Elements stories = new PikabuParser("http://pikabu.ru/hot").document.getElementById("stories_container").getElementsByClass("b-story");
 
         try{
             lastStoryId = Integer.parseInt(stories.get(0).attr("data-story-id"));

@@ -11,13 +11,13 @@ import org.jsoup.select.Elements;
 public class Launcher {
 
     public static void main(String[] args) {
-        int newsLimit = 5;
+        int newsLimit = 1000;
 
         PikabuParser pikabuParser = new PikabuParser();
-
+        PikabuStory story;
         while (newsLimit > 0){
-            PikabuStory story = pikabuParser.getNextStory();
-            if (story == null || story.getRating() < 100)
+            story = pikabuParser.getNextStory();
+            if (story == null || story.isNotDisplayable || story.getRating() < 0)
                 continue;
             System.out.println();
             System.out.println("*--*--*--*--*--*--*--*--*--*--*--*");
