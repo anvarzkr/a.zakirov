@@ -5,27 +5,42 @@ package ru.kpfu.itis.group11408.zakirov.semestrWork1;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.IOException;
-
 /**
  * Created by Anvar on 27.03.2015.
  */
 public class Launcher {
 
-
     public static void main(String[] args) {
-        HTMLParser parser = new HTMLParser("http://pikabu.ru/");
+        int newsLimit = 5;
 
-        Element content = parser.document.getElementById("stories_container");
+        PikabuParser pikabuParser = new PikabuParser();
 
-        Elements posts = content.getElementsByTag("tbody");
-        for (Element post : posts) {
-            for (Element header : post.getElementsByClass("b-story__header-info")){
-                System.out.println(header.getElementsByClass());
-            }
-
-            //String linkHref = posts.attr("href");
-            //String linkText = posts.text();
+        while (newsLimit > 0){
+            PikabuStory story = pikabuParser.getNextStory();
+            if (story == null || story.getRating() < 100)
+                continue;
+            System.out.println();
+            System.out.println("*--*--*--*--*--*--*--*--*--*--*--*");
+            System.out.println("Title: " + story.getHeader());
+            System.out.println("----------------------------------");
+            System.out.println("Author: " + story.getAuthorName());
+            System.out.println("----------------------------------");
+            System.out.println("Rating: " + story.getRating());
+            System.out.println("----------------------------------");
+            System.out.println("Story: " + story.getText());
+            System.out.println("*--*--*--*--*--*--*--*--*--*--*--*");
+            System.out.println();
+            newsLimit--;
         }
+
+//        Elements posts = content.getElementsByClass("b-story");
+//
+//        for (Element post : posts) {
+//            for (Element header : post.getElementsByClass("b-story__header-info")){
+//                for (Element link : header.getElementsByClass("b-story__link")){
+//                    System.out.println(link.text());
+//                }
+//            }
+//        }
     }
 }

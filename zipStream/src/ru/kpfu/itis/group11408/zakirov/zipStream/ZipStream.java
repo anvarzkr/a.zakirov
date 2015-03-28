@@ -12,6 +12,7 @@ public class ZipStream {
     public static void main(String[] args) {
         ZipStream zip = new ZipStream();
         zip.unarchive("zip.zip");
+        zip.archive("arch.zip", new String[]{"README.md", "exec_zipStream_Linux.sh", "exec_zipStream_Windows.bat", "file.name"});
     }
 
     public void unarchive(String archiveName){
@@ -31,20 +32,6 @@ public class ZipStream {
                     }
 
                     fos.close();
-
-                }
-
-                try(ZipOutputStream zos = new ZipOutputStream(new FileOutputStream("arch.zip"))){
-
-                    FileInputStream fis = new FileInputStream(entry.getName());
-
-                    zos.putNextEntry(new ZipEntry(entry.getName()));
-
-                    int data = 0;
-                    while ((data = fis.read()) != -1){
-                        zos.write(data);
-                    }
-
                 }
 
             }
@@ -55,44 +42,26 @@ public class ZipStream {
         }
     }
 
-    public void archive(String archiveName){
-        try(ZipInputStream zis = new ZipInputStream(new FileInputStream(archiveName))){
-
-            ZipEntry entry = null;
-
-            while((entry = zis.getNextEntry()) != null){
-
-                System.out.println(entry.getName());
-
-                try(FileOutputStream fos = new FileOutputStream(entry.getName())) {
-                    int data = 0;
-
-                    while ((data = zis.read()) != -1){
-                        fos.write(data);
-                    }
-
-                    fos.close();
-
+    public void archive(String archiveName, String[] fileNames){
+        try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(archiveName))) {
+            for(String fileName : fileNames) {
+                if (!new File(fileName).isFile()) {
+                    System.out.println("File \"" + fileName + "\" not found!");
+                    continue;
                 }
 
-                try(ZipOutputStream zos = new ZipOutputStream(new FileOutputStream("arch.zip"))){
+                FileInputStream fis = new FileInputStream(fileName);
 
-                    FileInputStream fis = new FileInputStream(entry.getName());
+                zos.putNextEntry(new ZipEntry(fileName));
 
-                    zos.putNextEntry(new ZipEntry(entry.getName()));
-
-                    int data = 0;
-                    while ((data = fis.read()) != -1){
-                        zos.write(data);
-                    }
-
+                int data = 0;
+                while ((data = fis.read()) != -1) {
+                    zos.write(data);
                 }
 
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ioE) {
+            ioE.printStackTrace();
         }
     }
 }
