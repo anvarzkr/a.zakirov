@@ -1,16 +1,17 @@
 package ru.kpfu.itis.group11408.zakirov.arrayHashMap;
 
 import java.util.*;
+import java.util.function.BiConsumer;
 
 /**
  * Created by Anvar on 28.03.2015.
  */
 public class ArrayHashMap<K, V> implements Map<K, V>{
     private int size;
-    LinkedList<Element>[] dictinary;
+    LinkedList<Element>[] dictionary;
 
     public ArrayHashMap(int size){
-        this.dictinary = new LinkedList[size];
+        this.dictionary = new LinkedList[size];
     }
 
     @Override
@@ -26,7 +27,7 @@ public class ArrayHashMap<K, V> implements Map<K, V>{
 
     @Override
     public boolean containsKey(Object key) {
-        for (Element element: dictinary[getKeyIndex(key)])
+        for (Element element: dictionary[getKeyIndex(key)])
             if (element.getKey() == key)
                 return true;
         return false;
@@ -34,57 +35,76 @@ public class ArrayHashMap<K, V> implements Map<K, V>{
 
     @Override
     public boolean containsValue(Object value) {
-        for (Element element: dictinary[getKeyIndex(value)])
-            if (element.getKey() == value)
-                return true;
+        for (int i = 0; i < dictionary.length; i++)
+            for (Element element: dictionary[i])
+                if (element.getValue() == value)
+                    return true;
         return false;
     }
 
     @Override
     public V get(Object key) {
-        for (Element element: dictinary[getKeyIndex(key)])
+        for (Element element: dictionary[getKeyIndex(key)])
             if (element.getKey() == key)
-                return null;//element.getKey();
+                return (V) element.getValue();
         return null;
     }
 
     @Override
     public V put(K key, V value) {
-        return null;
+        dictionary[getKeyIndex(key)].add(new Element(key, value));
+        this.size++;
+        return value;
     }
 
     @Override
     public V remove(Object key) {
+        if (this.containsKey(key))
+            if (dictionary[getKeyIndex(key)].remove(get(key))) {
+                this.size--;
+                return get(key);
+            }
+
         return null;
     }
 
     @Override
     public void putAll(Map<? extends K, ? extends V> m) {
-
+        m.forEach((k, v) -> this.put(k, v));
     }
 
     @Override
     public void clear() {
-
+        for (int i = 0; i < dictionary.length; i++)
+            dictionary[i].clear();
     }
 
     @Override
     public Set<K> keySet() {
-        return null;
+        Set<K> set = new HashSet<>();
+        for (int i = 0; i < dictionary.length; i++)
+            dictionary[i].forEach((el) -> set.add((K)el.getKey()));
+        return set;
     }
 
     @Override
     public Collection<V> values() {
-        return null;
+        Collection<V> collection = new ArrayList<>();
+        for (int i = 0; i < dictionary.length; i++)
+            dictionary[i].forEach((el) -> collection.add((V)el.getValue()));
+        return collection;
     }
 
     @Override
     public Set<Entry<K, V>> entrySet() {
-        return null;
+        Set<Entry<K, V>> set = new HashSet<>();
+        for (int i = 0; i < dictionary.length; i++)
+            dictionary[i].forEach((el) -> set.add(new Element<>((K) el.getKey(), (V) el.getValue())));
+        return set;
     }
 
     public int getKeyIndex(Object o){
-        return o.hashCode() % this.dictinary.length;
+        return o.hashCode() % this.dictionary.length;
     }
 
     private class Element<K, V> implements Entry<K, V>{
