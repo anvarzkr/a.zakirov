@@ -12,6 +12,8 @@ public class ArrayHashMap<K, V> implements Map<K, V>{
 
     public ArrayHashMap(int size){
         this.dictionary = new LinkedList[size];
+        for (int i = 0; i < size; i++)
+            this.dictionary[i] = new LinkedList<>();
     }
 
     @Override
