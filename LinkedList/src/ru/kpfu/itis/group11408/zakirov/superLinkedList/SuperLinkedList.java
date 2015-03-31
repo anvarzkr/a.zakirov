@@ -180,8 +180,8 @@ public class SuperLinkedList<T> implements List<T>{
             elem = getSuperLinkedItem(index - 1);
         }
 
-        SuperLinkedItem<T> predNext = elem.getNext();
-        SuperLinkedItem<T> newNext = new SuperLinkedItem<T>(o, predNext);
+        SuperLinkedItem<T> afterNext = elem.getNext();
+        SuperLinkedItem<T> newNext = new SuperLinkedItem<T>(o, afterNext);
 
         elem.setNext(newNext);
 

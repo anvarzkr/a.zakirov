@@ -20,7 +20,7 @@ public class Finder {
         this.isShowingDirs = showDirs;
         this.depth = depth;
         this.searchingString = searchingString;
-        this.match = "(?i).*"+searchingString.toLowerCase()+".*";
+        this.match = "(.*)"+searchingString.toLowerCase()+"(.*)";
     }
 
     public static void main(String[] args) {

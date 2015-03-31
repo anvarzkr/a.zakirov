@@ -23,6 +23,8 @@ public class Launcher {
 
         System.out.println();
         stringList.remove(0);
+        stringList.add(0, "Have");
+        stringList.remove(0);
         stringList.add(0, "I");
         stringList.set(stringList.size(), "?");
 

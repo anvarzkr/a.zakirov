@@ -7,8 +7,8 @@ import java.util.Formatter;
  * Created by Anvar on 10.03.2015.
  */
 public class ConsoleTableViewer <T> {
-    ModelProvider<T> modelProvider;
-    ViewProvider<T> viewProvider;
+    private ModelProvider<T> modelProvider;
+    private ViewProvider<T> viewProvider;
 
     public ConsoleTableViewer(ModelProvider<T> modelProvider, ViewProvider<T> viewProvider){
         this.modelProvider = modelProvider;
