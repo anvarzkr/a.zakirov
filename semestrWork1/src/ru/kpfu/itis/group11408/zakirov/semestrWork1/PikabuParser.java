@@ -36,7 +36,8 @@ public class PikabuParser {
             this.currentStoryId = getLastStoryId();
         Element story = null;
         try{
-            story = new PikabuParser("http://pikabu.ru/story/_" + currentStoryId).document.getElementById("inner_wrap_" + this.currentStoryId--);
+//            story = new PikabuParser("http://pikabu.ru/story/_" + currentStoryId).document.getElementById("inner_wrap_" + this.currentStoryId--);
+            story = new PikabuParser("http://pikabu.ru/story/_" + currentStoryId--).document.getElementsByClass("main-b").get(0);
         }catch (NullPointerException npe){
             System.out.println("Story not found: http://pikabu.ru/story/_" + currentStoryId + 1);
             return null;

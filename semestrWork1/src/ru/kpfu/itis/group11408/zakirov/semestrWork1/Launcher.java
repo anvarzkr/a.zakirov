@@ -28,6 +28,14 @@ public class Launcher {
             System.out.println("Rating: " + story.getRating());
             System.out.println("----------------------------------");
             System.out.println("Story: " + story.getText());
+            System.out.println("----------------------------------");
+            System.out.println("Top Comment Tree:");
+            String[] comments = story.getTopCommentStringArray();
+            for (int i = 0; i < comments.length; i++){
+                for (int j = 0; j <= i; j++)
+                    System.out.print("-");
+                System.out.println(" " + comments[i]);
+            }
             System.out.println("*--*--*--*--*--*--*--*--*--*--*--*");
             System.out.println();
             newsLimit--;
