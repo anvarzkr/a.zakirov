@@ -23,45 +23,14 @@ public class PikabuStory {
     private String authorLinkMatch = "(?i).*" + "profile" + ".*";;
 
     public PikabuStory(Element storyElement) {
-        try {
-            Element storyElementPost = storyElement.select("table").get(0);
-            //System.out.println(storyElementPost.text());
-            this.id = Integer.parseInt(storyElementPost.attr("data-story-id"));
-            //System.out.println(this.id);
-            this.text = storyElementPost.getElementById("textDiv" + this.id).text();
-            this.header = storyElementPost.getElementsByClass("b-story__header-info").get(0).getElementsByClass("b-story__link").get(0).text();
-            this.authorName = storyElementPost.getElementsByClass("sv_img_next").select("a").get(2).text();
-            try {
-                Element ratingElement = storyElementPost.getElementById("num_digs" + this.id);
-                this.rating = (ratingElement == null) ? 0 : Integer.parseInt(ratingElement.text());
-            } catch (NumberFormatException nfr) {
-                this.rating = 0;
-            }
-            try{
-                Element commentDiv = storyElement.getElementById("commentsDiv");
-                while (true) {
-                    try {
-                        Element topComment = commentDiv.select("table").get(0);
-                        String commentIdString = topComment.getElementsByClass("comm_wrap_counter").get(0).attr("id");
-                        int commentId = Integer.parseInt(commentIdString.replaceAll("com", ""));
-                        String comment = topComment.getElementById("comment_desc_" + commentId).text();
-                        topCommentTree.add(comment);
-                        commentDiv = commentDiv.getElementById("comment_toggle_" + commentId);
-                    }catch(Exception parseException){
-                        break;
-                    }
-                }
-            }catch (Exception e){
-                System.out.println("Cant get top comments tree.");
-            }
-
-        }catch (NullPointerException npe){
-            this.isNotDisplayable = true;
-        }catch(IndexOutOfBoundsException ioobe){
-            this.isNotDisplayable = true;
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        PikabuStoryParser pikabuParser = new PikabuStoryParser(storyElement);
+        this.id = pikabuParser.getId();
+        this.header = pikabuParser.getHeader();
+        this.text = pikabuParser.getText();
+        this.authorName = pikabuParser.getAuthorName();
+        this.rating = pikabuParser.getRating();
+        this.topCommentTree = pikabuParser.getTopCommentTree();
+        this.isNotDisplayable = pikabuParser.isNotDisplayable();
     }
 
     public String getHeader() {
@@ -103,16 +72,42 @@ public class PikabuStory {
     public String[] getTopCommentStringArray(){
         String[] returnString = new String[topCommentTree.size()];
         int i = 0;
+        nextIndex = 0;
         topCommentTree.forEach(str -> {returnString[getNextIndex()] = str;});
         return returnString;
     }
 
     private int nextIndex = 0;
+
     private int getNextIndex(){
         return nextIndex++;
     }
 
-    public void parseTopCommentTree() {
-
+    public void print(){
+        System.out.println();
+        System.out.println("*--*--*--*--*--*--*--*--*--*--*--*");
+        System.out.println("Title: " + this.getHeader());
+        System.out.println("----------------------------------");
+        System.out.println("Author: " + this.getAuthorName());
+        System.out.println("----------------------------------");
+        System.out.println("Rating: " + this.getRating());
+        System.out.println("----------------------------------");
+        System.out.println("Story: " + this.getText());
+        System.out.println("----------------------------------");
+        System.out.println("Top Comment Tree:");
+        String[] comments = this.getTopCommentStringArray();
+        for (int i = 0; i < comments.length; i++){
+            for (int j = 0; j <= i; j++)
+                System.out.print("-");
+            System.out.println(" " + comments[i]);
+        }
+        System.out.println("*--*--*--*--*--*--*--*--*--*--*--*");
+        System.out.println();
     }
+
+    public void save(){
+        XMLManager xmlManager = new XMLManager();
+        xmlManager.out("pikabu_" + this.getHeader(), this);
+    }
+
 }

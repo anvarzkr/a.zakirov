@@ -1,9 +1,13 @@
 package ru.kpfu.itis.group11408.zakirov.semestrWork1;
 
+/*
 
+ */
 
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
+import java.util.Scanner;
 
 /**
  * Created by Anvar on 27.03.2015.
@@ -12,43 +16,40 @@ public class Launcher {
 
     public static void main(String[] args) {
         int newsLimit = 1000;
+        int num;
 
-        PikabuParser pikabuParser = new PikabuParser();
-        PikabuStory story;
-        while (newsLimit > 0){
-            story = pikabuParser.getNextStory();
-            if (story == null || story.isNotDisplayable || story.getRating() < 0)
-                continue;
-            System.out.println();
-            System.out.println("*--*--*--*--*--*--*--*--*--*--*--*");
-            System.out.println("Title: " + story.getHeader());
-            System.out.println("----------------------------------");
-            System.out.println("Author: " + story.getAuthorName());
-            System.out.println("----------------------------------");
-            System.out.println("Rating: " + story.getRating());
-            System.out.println("----------------------------------");
-            System.out.println("Story: " + story.getText());
-            System.out.println("----------------------------------");
-            System.out.println("Top Comment Tree:");
-            String[] comments = story.getTopCommentStringArray();
-            for (int i = 0; i < comments.length; i++){
-                for (int j = 0; j <= i; j++)
-                    System.out.print("-");
-                System.out.println(" " + comments[i]);
+        try (Scanner scanner = new Scanner(System.in)) {
+            System.out.println("Please, choose the manu item(1-3)");
+            System.out.println("1 - load existing posts");
+            System.out.println("2 - parse pikabu.ru and save in xml");
+            System.out.println("3 - exit programm");
+            num = scanner.nextInt();
+            while (num < 1 || num > 3) {
+                System.out.println("Please, choose the manu item(1-3)");
+                num = scanner.nextInt();
             }
-            System.out.println("*--*--*--*--*--*--*--*--*--*--*--*");
-            System.out.println();
-            newsLimit--;
         }
 
-//        Elements posts = content.getElementsByClass("b-story");
-//
-//        for (Element post : posts) {
-//            for (Element header : post.getElementsByClass("b-story__header-info")){
-//                for (Element link : header.getElementsByClass("b-story__link")){
-//                    System.out.println(link.text());
-//                }
-//            }
-//        }
+        switch (num) {
+            case 1:
+                XMLManager xmlManager = new XMLManager();
+                xmlManager.load();
+                break;
+            case 2:
+                System.out.println("Start parsing data.");
+                PikabuParser pikabuParser = new PikabuParser();
+                PikabuStory story;
+                while (newsLimit > 0) {
+                    story = pikabuParser.getNextStory();
+                    if (story == null || story.isNotDisplayable || story.getRating() < 0)
+                        continue;
+                    story.print();
+                    story.save();
+                    newsLimit--;
+                }
+                break;
+            default:
+                System.out.println("Shutdowning the programm");
+        }
     }
 }
