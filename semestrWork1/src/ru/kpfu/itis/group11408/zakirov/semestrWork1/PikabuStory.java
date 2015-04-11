@@ -16,10 +16,8 @@ public class PikabuStory {
     private String authorName;
     private int rating;
     private int id;
-    private boolean isText;
     private ArrayList<String> topCommentTree = new ArrayList<>();
-    public boolean onlyText = true;
-    public boolean isNotDisplayable;
+    private boolean isNotDisplayable;
     private String authorLinkMatch = "(?i).*" + "profile" + ".*";;
 
     public PikabuStory(Element storyElement) {
@@ -31,6 +29,14 @@ public class PikabuStory {
         this.rating = pikabuParser.getRating();
         this.topCommentTree = pikabuParser.getTopCommentTree();
         this.isNotDisplayable = pikabuParser.isNotDisplayable();
+    }
+
+    public void setNotDisplayable(boolean isNotDisplayable) {
+        this.isNotDisplayable = isNotDisplayable;
+    }
+
+    public boolean isNotDisplayable() {
+        return isNotDisplayable;
     }
 
     public String getHeader() {

@@ -15,13 +15,13 @@ import java.util.Scanner;
 public class Launcher {
 
     public static void main(String[] args) {
-        int newsLimit = 1000;
+        int newsLimit = 100;
         int num;
 
         try (Scanner scanner = new Scanner(System.in)) {
             System.out.println("Please, choose the manu item(1-3):");
             System.out.println("1 - Load existing posts from XML.");
-            System.out.println("2 - Parse pikabu.ru and save posts in XML.");
+            System.out.println("2 - Parse pikabu.ru and save first 100 text posts in XML.");
             System.out.println("3 - Exit program.");
             num = scanner.nextInt();
             while (num < 1 || num > 3) {
@@ -41,7 +41,7 @@ public class Launcher {
                 PikabuStory story;
                 while (newsLimit > 0) {
                     story = pikabuParser.getNextStory();
-                    if (story == null || story.isNotDisplayable || story.getRating() < 0)
+                    if (story == null || story.isNotDisplayable() || story.getRating() < 0)
                         continue;
                     story.print();
                     story.save();
