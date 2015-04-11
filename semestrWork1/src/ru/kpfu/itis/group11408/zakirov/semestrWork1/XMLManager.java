@@ -1,6 +1,7 @@
 package ru.kpfu.itis.group11408.zakirov.semestrWork1;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -76,44 +77,49 @@ public class XMLManager {
     }
 
     public void load(){
-        for (File file : new File("stories").listFiles()) {
-            if (!file.getName().contains(".xml"))
-                continue;
-            try {
-                org.jsoup.nodes.Document doc = Jsoup.parse(file, "UTF-8");
+        try {
+            for (File file : new File("stories").listFiles()) {
+                if (!file.getName().contains(".xml"))
+                    continue;
+                try {
+                    org.jsoup.nodes.Document doc = Jsoup.parse(file, "UTF-8");
 
-                String title = doc.getElementsByTag("title").text();
-                String text = doc.getElementsByTag("text").text();
-                String author = doc.getElementsByTag("author").text();
-                String rating = doc.getElementsByTag("rating").text();
-                int commentsCount = Integer.parseInt(doc.getElementsByTag("comments-count").text());
-                String[] comments = new String[commentsCount];
-                int j = 0;
-                for(org.jsoup.nodes.Element element: doc.getElementsByTag("comment")){
-                    comments[j++] = element.text();
-                }
+                    String title = doc.getElementsByTag("title").text();
+                    String text = doc.getElementsByTag("text").text();
+                    String author = doc.getElementsByTag("author").text();
+                    String rating = doc.getElementsByTag("rating").text();
+                    int commentsCount = Integer.parseInt(doc.getElementsByTag("comments-count").text());
+                    String[] comments = new String[commentsCount];
+                    int j = 0;
+                    for (org.jsoup.nodes.Element element : doc.getElementsByTag("comment")) {
+                        comments[j++] = element.text();
+                    }
 
-                System.out.println();
-                System.out.println("*--*--*--*--*--*--*--*--*--*--*--*");
-                System.out.println("Title: " + title);
-                System.out.println("----------------------------------");
-                System.out.println("Author: " + author);
-                System.out.println("----------------------------------");
-                System.out.println("Rating: " + rating);
-                System.out.println("----------------------------------");
-                System.out.println("Story: " + text);
-                System.out.println("----------------------------------");
-                System.out.println("Top Comment Tree:");
-                for (int i = 0; i < comments.length; i++){
-                    for (j = 0; j <= i; j++)
-                        System.out.print("-");
-                    System.out.println(" " + comments[i]);
+                    System.out.println();
+                    System.out.println("*--*--*--*--*--*--*--*--*--*--*--*");
+                    System.out.println("Title: " + title);
+                    System.out.println("----------------------------------");
+                    System.out.println("Author: " + author);
+                    System.out.println("----------------------------------");
+                    System.out.println("Rating: " + rating);
+                    System.out.println("----------------------------------");
+                    System.out.println("Story: " + text);
+                    System.out.println("----------------------------------");
+                    System.out.println("Top Comment Tree:");
+                    for (int i = 0; i < comments.length; i++) {
+                        for (j = 0; j <= i; j++)
+                            System.out.print("-");
+                        System.out.println(" " + comments[i]);
+                    }
+                    System.out.println("*--*--*--*--*--*--*--*--*--*--*--*");
+                    System.out.println();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                System.out.println("*--*--*--*--*--*--*--*--*--*--*--*");
-                System.out.println();
-            } catch (IOException e) {
-                e.printStackTrace();
             }
+        }catch (Exception e){
+            System.out.println("Sorry, but there was a problem while loading posts.");
+            System.out.println("Check if folder 'stories' exists in the main folder");
         }
     }
 }

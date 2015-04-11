@@ -19,10 +19,10 @@ public class Launcher {
         int num;
 
         try (Scanner scanner = new Scanner(System.in)) {
-            System.out.println("Please, choose the manu item(1-3)");
-            System.out.println("1 - load existing posts");
-            System.out.println("2 - parse pikabu.ru and save in xml");
-            System.out.println("3 - exit programm");
+            System.out.println("Please, choose the manu item(1-3):");
+            System.out.println("1 - Load existing posts from XML.");
+            System.out.println("2 - Parse pikabu.ru and save posts in XML.");
+            System.out.println("3 - Exit program.");
             num = scanner.nextInt();
             while (num < 1 || num > 3) {
                 System.out.println("Please, choose the manu item(1-3)");
