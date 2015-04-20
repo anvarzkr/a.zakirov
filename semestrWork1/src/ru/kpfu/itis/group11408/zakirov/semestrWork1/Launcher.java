@@ -7,6 +7,7 @@ package ru.kpfu.itis.group11408.zakirov.semestrWork1;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.util.HashSet;
 import java.util.Scanner;
 
 /**
@@ -26,30 +27,40 @@ public class Launcher {
             num = scanner.nextInt();
             while (num < 1 || num > 3) {
                 System.out.println("Please, choose the manu item(1-3)");
+                System.out.println("1 - Load existing posts from XML.");
+                System.out.println("2 - Parse pikabu.ru and save first 100 text posts in XML.");
+                System.out.println("3 - Exit program.");
                 num = scanner.nextInt();
             }
-        }
 
-        switch (num) {
-            case 1:
-                XMLManager xmlManager = new XMLManager();
-                xmlManager.load();
-                break;
-            case 2:
-                System.out.println("Start parsing data.");
-                PikabuParser pikabuParser = new PikabuParser();
-                PikabuStory story;
-                while (newsLimit > 0) {
-                    story = pikabuParser.getNextStory();
-                    if (story == null || story.isNotDisplayable() || story.getRating() < 0)
-                        continue;
-                    story.print();
-                    story.save();
-                    newsLimit--;
-                }
-                break;
-            default:
-                System.out.println("Shutdowning the programm");
+            switch (num) {
+                case 1:
+                    XMLManager xmlManager = new XMLManager();
+                    xmlManager.load();
+                    break;
+                case 2:
+                    System.out.println("Type limit of posts to parse. (number > 0)");
+                    newsLimit = scanner.nextInt();
+                    while (newsLimit <= 0) {
+                        System.out.println("Type limit of posts to parse. (number > 0)");
+                        newsLimit = scanner.nextInt();
+                    }
+                    System.out.println("Start parsing data.");
+                    PikabuParser pikabuParser = new PikabuParser();
+                    PikabuStory story;
+                    while (newsLimit > 0) {
+                        story = pikabuParser.getNextStory();
+                        if (story == null || story.isNotDisplayable() || story.getRating() < 0)
+                            continue;
+                        story.print();
+                        story.save();
+                        newsLimit--;
+                    }
+                    break;
+                default:
+                    System.out.println("Shutdowning the programm");
+            }
         }
+        System.out.println("Thanks for using out parser.");
     }
 }

@@ -20,6 +20,14 @@ public class PikabuStory {
     private boolean isNotDisplayable;
     private String authorLinkMatch = "(?i).*" + "profile" + ".*";;
 
+    public PikabuStory(String title, String text, String author, int rating, ArrayList<String> comments) {
+        this.header = title;
+        this.text = text;
+        this.authorName = author;
+        this.rating = rating;
+        this.topCommentTree = comments;
+    }
+
     public PikabuStory(Element storyElement) {
         PikabuStoryParser pikabuParser = new PikabuStoryParser(storyElement);
         this.id = pikabuParser.getId();
@@ -76,17 +84,13 @@ public class PikabuStory {
     }
 
     public String[] getTopCommentStringArray(){
-        String[] returnString = new String[topCommentTree.size()];
-        int i = 0;
-        nextIndex = 0;
-        topCommentTree.forEach(str -> {returnString[getNextIndex()] = str;});
-        return returnString;
-    }
-
-    private int nextIndex = 0;
-
-    private int getNextIndex(){
-        return nextIndex++;
+        //String[] returnString = new String[topCommentTree.size()];
+        //int i = 0;
+        //nextIndex = 0;
+        String[] comments = topCommentTree.toArray(new String[]{});
+        return comments;
+        //topCommentTree.forEach(str -> {returnString[getNextIndex()] = str;});
+        //return returnString;
     }
 
     public void print(){

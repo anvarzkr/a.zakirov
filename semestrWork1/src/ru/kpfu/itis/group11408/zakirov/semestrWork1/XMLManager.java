@@ -3,6 +3,7 @@ package ru.kpfu.itis.group11408.zakirov.semestrWork1;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -28,11 +29,12 @@ public class XMLManager {
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
             Document doc = docBuilder.newDocument();
-            Element rootElement = doc.createElement("stories");
-            doc.appendChild(rootElement);
+            /*Element rootElement = doc.createElement("stories");
+            doc.appendChild(rootElement);*/
 
             Element storyElement = doc.createElement("story");
-            rootElement.appendChild(storyElement);
+            //rootElement.appendChild(storyElement);
+            doc.appendChild(storyElement);
 
             Element title = doc.createElement("title");
             title.appendChild(doc.createTextNode(pikabuStory.getHeader()));
@@ -87,32 +89,24 @@ public class XMLManager {
                     String title = doc.getElementsByTag("title").text();
                     String text = doc.getElementsByTag("text").text();
                     String author = doc.getElementsByTag("author").text();
-                    String rating = doc.getElementsByTag("rating").text();
-                    int commentsCount = Integer.parseInt(doc.getElementsByTag("comments-count").text());
-                    String[] comments = new String[commentsCount];
+                    int rating;
+                    try {
+                        rating = Integer.parseInt(doc.getElementsByTag("rating").text());
+                    }catch (NumberFormatException nFE) {
+                        rating = 0;
+                    }
+                    //int commentsCount = Integer.parseInt(doc.getElementsByTag("comments-count").text());
+                    ArrayList<String> commentList = new ArrayList<>();
+                    //String[] comments = new String[commentsCount];
                     int j = 0;
                     for (org.jsoup.nodes.Element element : doc.getElementsByTag("comment")) {
-                        comments[j++] = element.text();
+                        commentList.add(element.text());
+                        //comments[j++] = element.text();
                     }
 
-                    System.out.println();
-                    System.out.println("*--*--*--*--*--*--*--*--*--*--*--*");
-                    System.out.println("Title: " + title);
-                    System.out.println("----------------------------------");
-                    System.out.println("Author: " + author);
-                    System.out.println("----------------------------------");
-                    System.out.println("Rating: " + rating);
-                    System.out.println("----------------------------------");
-                    System.out.println("Story: " + text);
-                    System.out.println("----------------------------------");
-                    System.out.println("Top Comment Tree:");
-                    for (int i = 0; i < comments.length; i++) {
-                        for (j = 0; j <= i; j++)
-                            System.out.print("-");
-                        System.out.println(" " + comments[i]);
-                    }
-                    System.out.println("*--*--*--*--*--*--*--*--*--*--*--*");
-                    System.out.println();
+                    new PikabuStory(title, text, author, rating, commentList).print();
+
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

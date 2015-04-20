@@ -17,14 +17,17 @@ public class PikabuParser {
 
     }
 
-    public PikabuParser(String url){
-        try {
-            this.document = Jsoup.connect(url).get();
-        }catch(Exception e) {
-            System.err.println("Story unavailable: " + url);
-            //e.printStackTrace();
-        }
-
+    public PikabuParser(String url) {
+        boolean pageDownloaded = false;
+        while (!pageDownloaded)
+            try {
+                this.document = Jsoup.connect(url).get();
+                pageDownloaded = true;
+            } catch (Exception e) {
+                System.err.println("Story unavailable: " + url);
+                System.err.println("Trying to get the content again.");
+                System.err.println("Check your internet connection");
+            }
     }
 
     public Document getDocument(){
@@ -36,7 +39,7 @@ public class PikabuParser {
             this.currentStoryId = getLastStoryId();
         Element story = null;
         try{
-//            story = new PikabuParser("http://pikabu.ru/story/_" + currentStoryId).document.getElementById("inner_wrap_" + this.currentStoryId--);
+            //story = new PikabuParser("http://pikabu.ru/story/_" + currentStoryId).document.getElementById("inner_wrap_" + this.currentStoryId--);
             story = new PikabuParser("http://pikabu.ru/story/_" + currentStoryId--).document.getElementsByClass("main-b").get(0);
         }catch (NullPointerException npe){
             //System.out.println("Story not found: http://pikabu.ru/story/_" + currentStoryId + 1);

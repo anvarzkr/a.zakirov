@@ -38,7 +38,7 @@ public class PikabuStoryParser {
                         String commentIdString = topComment.getElementsByClass("comm_wrap_counter").get(0).attr("id");
                         int commentId = Integer.parseInt(commentIdString.replaceAll("com", ""));
                         String comment = topComment.getElementById("comment_desc_" + commentId).text();
-                        topCommentTree.add(comment);
+                        topCommentTree.add((comment.length() != 0) ? comment : "%An image here%");
                         commentDiv = commentDiv.getElementById("comment_toggle_" + commentId);
                     }catch(Exception parseException){
                         break;
