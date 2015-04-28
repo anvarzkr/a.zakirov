@@ -9,7 +9,9 @@ import java.util.Random;
  * Created by Anvar on 26.04.2015.
  */
 public class Floyd {
-    public static int INF = Integer.MAX_VALUE;
+    private static int INF = Integer.MAX_VALUE;
+    private int[][] W;
+    private int[][] H;
 
     public static void main(String[] args) {
         int size = 5;
@@ -18,31 +20,30 @@ public class Floyd {
         int[][] H = new int[size][size];
         for (int i = 0; i < size; i++){
             for (int j = 0; j < size; j++){
-                W[i][j] = (i == j) ? 0 : random.nextInt(5);
+                W[i][j] = (i == j) ? 0 : random.nextInt(5) + 1;
                 if (W[i][j] == 0 && i != j)
                     W[i][j] = INF;
                 H[i][j] = (W[i][j] == INF || W[i][j] == 0) ? 0 : (j + 1);
             }
         }
 
-        print(W, H, false);
+        Floyd floyd = new Floyd(W, H);
 
-        for (int k = 0; k < size; k++){
-            for (int i = 0; i < size; i++){
-                for (int j = 0; j < size; j++){
-                    if (W[i][k] < INF && W[k][j] < INF)
-                        if (W[i][j] > W[i][k] + W[k][j]) {
-                            W[i][j] = W[i][k] + W[k][j];
-                            H[i][j] = H[i][k];
-                        }
-                }
-            }
-        }
+        floyd.print(false);
+        long time = System.currentTimeMillis();
+        floyd.run();
+        long timeAlg = System.currentTimeMillis() - time;
+        floyd.print(true);
 
-        print(W, H, true);
+        System.out.println(((double)timeAlg / 1000) + " seconds.");
     }
 
-    private static void print(int[][] W, int[][] H, boolean printPath){
+    public Floyd(int[][] W, int[][] H){
+        this.W = W;
+        this.H = H;
+    }
+
+    private void print(boolean printPath){
         System.out.println("W:");
         for (int[] r : W){
             for (int val : r)
@@ -58,14 +59,14 @@ public class Floyd {
         if (!printPath)
             return;
         for (int i = 1; i <= W.length; i++){
-            List list = getPath(H, 1, i);
+            List list = this.getPath(1, i);
             System.out.println();
             list.forEach(elem-> System.out.print(((list.indexOf(elem) == 0) ? "" : " -> ") + elem));
             System.out.println();
         }
     }
 
-    private static List getPath(int[][] H, int from, int to){
+    private List getPath(int from, int to){
         if (H[from - 1][to - 1] == 0)
             return new LinkedList<>();
         List<Integer> list = new LinkedList<>();
@@ -77,5 +78,19 @@ public class Floyd {
         }
         list.add(to);
         return list;
+    }
+
+    public void run(){
+        for (int k = 0; k < W.length; k++){
+            for (int i = 0; i < W.length; i++){
+                for (int j = 0; j < W.length; j++){
+                    if (W[i][k] < INF && W[k][j] < INF)
+                        if (W[i][j] > W[i][k] + W[k][j]) {
+                            W[i][j] = W[i][k] + W[k][j];
+                            H[i][j] = H[i][k];
+                        }
+                }
+            }
+        }
     }
 }
