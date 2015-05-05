@@ -61,13 +61,13 @@ public class Floyd {
         }
         if (!printPath)
             return;
+        System.out.println();
         for (int i = 1; i <= W.length; i++)
             for (int j = 1; j <= W.length; j++){
                 List<Integer> list = this.getPath(i, j);
                 if (list.size() == 0)
                     continue;
-                System.out.println();
-                list.forEach(elem-> System.out.print(((list.indexOf(elem) == 0) ? "" : " -> ") + elem));
+                list.forEach(elem -> System.out.print(((list.indexOf(elem) == 0) ? "" : " -> ") + elem));
                 System.out.println();
             }
     }
