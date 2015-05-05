@@ -29,10 +29,13 @@ public class Floyd {
 
         Floyd floyd = new Floyd(W, H);
 
+        System.out.println("Ishodnye matrici smejnosti i istorii:");
         floyd.print(false);
         long time = System.currentTimeMillis();
         floyd.run();
         long timeAlg = System.currentTimeMillis() - time;
+        System.out.println();
+        System.out.println("Konechnie matrici rasstoyanij i putey:");
         floyd.print(true);
 
         System.out.println(((double)timeAlg / 1000) + " seconds.");
@@ -58,15 +61,18 @@ public class Floyd {
         }
         if (!printPath)
             return;
-        for (int i = 1; i <= W.length; i++){
-            List list = this.getPath(1, i);
-            System.out.println();
-            list.forEach(elem-> System.out.print(((list.indexOf(elem) == 0) ? "" : " -> ") + elem));
-            System.out.println();
-        }
+        for (int i = 1; i <= W.length; i++)
+            for (int j = 1; j <= W.length; j++){
+                List<Integer> list = this.getPath(i, j);
+                if (list.size() == 0)
+                    continue;
+                System.out.println();
+                list.forEach(elem-> System.out.print(((list.indexOf(elem) == 0) ? "" : " -> ") + elem));
+                System.out.println();
+            }
     }
 
-    private List getPath(int from, int to){
+    private List<Integer> getPath(int from, int to){
         if (H[from - 1][to - 1] == 0)
             return new LinkedList<>();
         List<Integer> list = new LinkedList<>();
