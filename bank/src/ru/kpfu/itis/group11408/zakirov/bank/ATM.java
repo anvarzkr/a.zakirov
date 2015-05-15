@@ -20,12 +20,14 @@ public class ATM {
     }
 
     public void putMoney(Client client, long amount) {
-        System.out.println(client.getId() + " | " + client.getMoney() + " | " + amount);
         if(client.getMoney() < amount || !ownerBank.hasClient(client) || ownerBank.getMoney() + amount < 0)
             return;
         this.money += amount;
         ownerBank.addMoney(amount);
-        client.setMoney(client.getMoney() + amount);
+        if (client.getMoney() + amount > 0) {
+            client.setMoney(client.getMoney() + amount);
+            System.out.println("Client " + client.getId() + " has " + client.getMoney() + "$ and " + (amount >= 0 ? "gets" : "puts") + " " + Math.abs(amount) + "$");
+        }
     }
 
 }
