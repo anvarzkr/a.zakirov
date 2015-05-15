@@ -27,7 +27,11 @@ public class MatrixMultiplicator {
 
         startTest(matrix1, matrix2, 1);
         startTest(matrix1, matrix2, 2);
+        startTest(matrix1, matrix2, 3);
         startTest(matrix1, matrix2, 4);
+        startTest(matrix1, matrix2, 5);
+        startTest(matrix1, matrix2, 10);
+        startTest(matrix1, matrix2, 100);
     }
 
     public static void startTest(int[][] matrix1, int[][] matrix2, int threadCount){
